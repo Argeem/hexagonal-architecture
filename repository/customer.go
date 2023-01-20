@@ -10,6 +10,6 @@ type Customer struct {
 }
 
 type CustomerRepository interface {
-	getAll() ([]Customer, error)
+	GetAll() ([]Customer, error)
 	GetById(int) (*Customer, error)
 }
