@@ -1,10 +1,6 @@
 package main
 
 import (
-	"bank/repository"
-	"bank/service"
-	"fmt"
-
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
@@ -15,12 +11,19 @@ func main() {
 		panic(err)
 	}
 
-	customerRepository := repository.NewCustomerRepositoryDB(db)
-	customerService := service.NewCustomerService(customerRepository)
+	_ = db
+	// customerRepository := repository.NewCustomerRepositoryDB(db)
+	// customerService := service.NewCustomerService(customerRepository)
 
-	customer, err := customerService.GetCustomers()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(customer)
+	// customers, err := customerService.GetCustomers()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println(customers)
+
+	// customer, err := customerService.GetCustomer(2000)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println(customer)
 }
