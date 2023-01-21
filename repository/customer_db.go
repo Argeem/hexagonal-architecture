@@ -6,7 +6,7 @@ type customerRepositoryDB struct { // start with : lower case private : upper ca
 	db *sqlx.DB
 }
 
-func NewCustomerRepositoryDB(db *sqlx.DB) customerRepositoryDB {
+func NewCustomerRepositoryDB(db *sqlx.DB) CustomerRepository {
 	return customerRepositoryDB{db: db}
 }
 
