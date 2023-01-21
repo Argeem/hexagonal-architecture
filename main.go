@@ -16,8 +16,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	customerRepository := repository.NewCustomerRepositoryDB(db)
-	customerService := service.NewCustomerService(customerRepository)
+	customerRepositoryDB := repository.NewCustomerRepositoryDB(db)
+	_ = customerRepositoryDB
+	customerRepositoryMock := repository.NewCustomerRepositoryMock()
+	customerService := service.NewCustomerService(customerRepositoryMock)
 	customerHandler := handler.NewCustomerHandler(customerService)
 
 	router := mux.NewRouter()
