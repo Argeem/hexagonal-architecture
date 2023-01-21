@@ -1,7 +1,13 @@
 package main
 
 import (
+	"bank/handler"
+	"bank/repository"
+	"bank/service"
+	"net/http"
+
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -10,20 +16,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	customerRepository := repository.NewCustomerRepositoryDB(db)
+	customerService := service.NewCustomerService(customerRepository)
+	customerHandler := handler.NewCustomerHandler(customerService)
 
-	_ = db
-	// customerRepository := repository.NewCustomerRepositoryDB(db)
-	// customerService := service.NewCustomerService(customerRepository)
+	router := mux.NewRouter()
 
-	// customers, err := customerService.GetCustomers()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Println(customers)
+	router.HandleFunc("/customers", customerHandler.GetCustomers).Methods(http.MethodGet)
+	router.HandleFunc("/customer/{customerID}", customerHandler.GetCustomer).Methods(http.MethodPost)
 
-	// customer, err := customerService.GetCustomer(2000)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// fmt.Println(customer)
+	http.ListenAndServe(":8000", router)
 }

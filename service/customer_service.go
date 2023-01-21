@@ -2,6 +2,8 @@ package service
 
 import (
 	"bank/repository"
+	"database/sql"
+	"errors"
 	"log"
 )
 
@@ -16,7 +18,10 @@ func NewCustomerService(cr repository.CustomerRepository) customerService {
 func (s customerService) GetCustomers() ([]CustomerResponse, error) {
 	customers, err := s.cr.GetAll()
 	if err != nil {
-		log.Panicln(err)
+		if err == sql.ErrNoRows {
+			return nil, errors.New("customer not found")
+		}
+		log.Println(err)
 		return nil, err
 	}
 	custResS := []CustomerResponse{}
@@ -34,6 +39,9 @@ func (s customerService) GetCustomers() ([]CustomerResponse, error) {
 func (s customerService) GetCustomer(id int) (*CustomerResponse, error) {
 	customer, err := s.cr.GetById(id)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errors.New("customer not found")
+		}
 		log.Println(err)
 		return nil, err
 	}
